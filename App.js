@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, StatusBar, AsyncStorage,AppState } from 'react-native';
 import { MainStack, isLogin } from './config/Route';
 import Header from './home/Header';
+import Splash from './Splash'
 import Login from './login/Login';
 import PushNotif from './config/PushNotif';
 import PushNotification from 'react-native-push-notification';
@@ -11,7 +12,8 @@ export default class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      isLogin : null
+      isLogin : null,
+      initial : true
     }
   }
 
@@ -23,7 +25,8 @@ export default class App extends React.Component {
     try {
       AsyncStorage.getItem('nim').done((nim) => {
         this.setState({
-          isLogin: nim
+          isLogin: nim,
+          initial: false
         });
       });
     } catch (error) {
@@ -66,17 +69,17 @@ export default class App extends React.Component {
 
 
   render() {
-    return (this.state.isLogin !== null) ? (
-     <View style={styles.container} >
-        <Header logout={this.logout.bind(this)} />
-        <MainStack />
-        <PushNotif />
-    </View>
-    ): (
-        <View style={styles.container} >
-          <Login login={this.login.bind(this)} />
-        </View>
-    )
+    return (this.state.initial) ? <Splash /> : (this.state.isLogin !== null) ? (
+      <View style={styles.container} >
+         <Header logout={this.logout.bind(this)} />
+         <MainStack />
+         <PushNotif />
+     </View>
+     ): (
+         <View style={styles.container} >
+           <Login login={this.login.bind(this)} />
+         </View>
+     )
   }
 }
 

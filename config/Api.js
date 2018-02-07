@@ -126,3 +126,16 @@ export function authUser(nim,pass,callback,errcalback){
     	errcalback(err);
     });
 }
+
+export function kuliahList(token,callback){
+    fetch(host+'/kuliah',{
+        method : 'GET',
+        headers : {
+            'Authorization' : 'Bearer '+token
+        }
+    }).then((res) => {
+        return res.json();
+    }).then((json) => {
+        callback(json)
+    })
+}

@@ -39,7 +39,9 @@ export default class Tbody extends Component {
                             />
                         </TouchableOpacity>)
                 });
-                lists.push(<TouchableOpacity key={0}>
+                lists.push(<TouchableOpacity key={0} onPress={() => {
+                        this.props.navigation.navigate('add',{data:null});
+                    }}>
                         <CellAdd />
                      </TouchableOpacity>)
                 this.setState({

@@ -5,15 +5,16 @@ import { StackNavigator } from 'react-navigation';
 import Info from './Info';
 import Tugas from './Tugas';
 // create a component
-class Profil extends Component {
+class Add extends Component {
     constructor(props){
         super(props);
     }
     render() {
         return (
             <View style={{ flex: 1, marginTop: 20 }}>
-                <Info data={this.props.navigation.state.params.data} />
-                <Tugas data={this.props.navigation.state.params.data.tugas} />
+                {/* <Text>HEllo</Text> */}
+                <Info data={null}/>
+                <Tugas data={null} />
             </View>
         );
     }
@@ -29,4 +30,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default Profil;
+export default Add;

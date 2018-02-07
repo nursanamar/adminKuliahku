@@ -5,6 +5,7 @@ import { StackNavigator, TabNavigator } from 'react-navigation'
 import { Today, Tomorrow } from '../home/Body';
 import Home from '../home/Home';
 import Profil from '../home/profil/Body';
+import Add from '../home/profil/Add';
 import Header from '../home/Header';
 import Main from '../main/Main';
 import Login from '../login/Login'
@@ -15,6 +16,9 @@ export const TodayStack = StackNavigator({
     },
     profil : {
         screen : Profil
+    },
+    add : {
+        screen : Add
     }
 },{
     headerMode: 'null'
@@ -26,6 +30,9 @@ export const TomorowStack = StackNavigator({
     },
     profil : {
         screen : Profil
+    },
+    add : {
+        screen : Add
     }
 },{
     headerMode: 'null'
