@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, KeyboardAvoidingView} from 'react-native';
+import { ScrollView,View, Text, StyleSheet, KeyboardAvoidingView} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import Info from './Info';
 import Tugas from './Tugas';
@@ -11,10 +11,14 @@ class Profil extends Component {
     }
     render() {
         return (
+            
             <View style={{ flex: 1, marginTop: 20 }}>
-                <Info data={this.props.navigation.state.params.data} />
-                <Tugas data={this.props.navigation.state.params.data.tugas} />
+                <ScrollView>
+                    <Info data={this.props.navigation.state.params.data} />
+                    <Tugas data={this.props.navigation.state.params.data.tugas} />
+                </ScrollView>
             </View>
+            
         );
     }
 }
