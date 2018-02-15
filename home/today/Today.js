@@ -1,9 +1,9 @@
 //import liraries
 import React, { Component } from 'react';
-import {TouchableOpacity, View, Text, StyleSheet, ScrollView, Button,AsyncStorage } from 'react-native';
+import {AppState,TouchableOpacity, View, Text, StyleSheet, ScrollView, Button,AsyncStorage } from 'react-native';
 import List from './List';
 import Profil from '../profil/Body';
-import {getData} from '../../config/Api';
+import {getData, ws, fireNotif} from '../../config/Api';
 import CellAdd from '../CellAdd';
 // create a component
 export default class Tbody extends Component {
@@ -13,6 +13,17 @@ export default class Tbody extends Component {
             data : [],
             status : '',
         }
+
+        ws.onmessage = function(e) {
+            let res = JSON.parse(e.data);
+
+            if(res.action === 'log'){
+                console.log(res.data);
+            }else{
+                fireNotif(res.msg);
+                this.componentDidMount();
+            }
+        }.bind(this)
     }
 
     componentDidMount(){
@@ -51,7 +62,30 @@ export default class Tbody extends Component {
                     status : ''
                 })
             }.bind(this))
-        })
+        });
+
+        AppState.addEventListener("change",this.handlestate.bind(this))
+    }
+
+    componentWillUnmount(){
+        AppState.removeEventListener('change',this.handlestate.bind(this));
+    
+    }
+
+    handlestate(status){
+        console.log(status);
+        if((status === 'background') || (status === 'inactive')){
+            ws.onmessage = function(e) {
+                let res = JSON.parse(e.data);
+    
+                if(res.action === 'log'){
+                    console.log(res.data);
+                }else{
+                    fireNotif(res.msg);
+                    // this.componentDidMount();
+                }
+            }
+        }
     }
 
     render() {

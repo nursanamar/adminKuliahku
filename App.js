@@ -4,6 +4,7 @@ import { MainStack, isLogin } from './config/Route';
 import Header from './home/Header';
 import Splash from './Splash'
 import Login from './login/Login';
+import {getData} from './config/Api';
 import PushNotif from './config/PushNotif';
 import PushNotification from 'react-native-push-notification';
 
@@ -13,11 +14,13 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       isLogin : null,
-      initial : true
+      initial : true,
+      jadwal : []
     }
 
     this.collection = {
-      logout : this.logout.bind(this)
+      logout : this.logout.bind(this),
+      fireMsg : this.fireNotif.bind(this),
     }
   }
 
@@ -64,9 +67,10 @@ export default class App extends React.Component {
     AsyncStorage.multiRemove(['nim','user','token']).then(() => {
       this.setState({
         isLogin: null
-      })
+      });
     })
   }
+
 
   login(user,token){
     console.log('inputan user',user)
@@ -74,37 +78,10 @@ export default class App extends React.Component {
       this.setState({
         isLogin: user.nim
       });
-      this.wsInit();
     })
   }
 
-  wsInit(){
-    var ws = new WebSocket("ws://localhost:4444/jadwal");
-
-    ws.onopen = () => {
-      let data = {
-        action : "auth",
-        data : {
-          id:"nursan"
-        }
-      };
-
-      ws.send(JSON.stringify(data));
-
-    }
-
-    ws.onmessage = (e) => {
-      this.fireNotif(e.data.data);
-    }
-
-    ws.onerror = (e) => {
-      console.log(e);
-    }
-
-    ws.onclose = () => {
-      console.log("closed")
-    }
-  }
+  
 
 
 

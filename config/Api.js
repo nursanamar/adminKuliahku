@@ -1,3 +1,4 @@
+import PushNotification from 'react-native-push-notification';
 
 // export function getData(when){
 //     var data;
@@ -153,3 +154,35 @@ export function update(token,data,callback){
         callback(json)
     })
 }
+
+export function fireNotif(msg){
+    PushNotification.localNotification({
+      message: msg, // (required)
+    });
+  }
+
+export var ws = new WebSocket("ws://localhost:4444/jadwal");
+
+    ws.onopen = () => {
+      let data = {
+        action : 'auth',
+        data : {
+          id : 'nursan'
+        }
+      }
+
+      ws.send(JSON.stringify(data))
+    }
+
+
+    
+    // ws.onmessage = function(e) {
+    //   console.log(e.data);
+    //   let res =  JSON.parse(e.data);
+
+    //   if(res.action === 'log'){
+    //     fireNotif(res.data);
+    //   }else{
+    //     fireNotif(res.msg);
+    //   }
+    // };

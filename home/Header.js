@@ -6,6 +6,10 @@ export default class Header extends React.Component  {
   constructor(props) {
     super(props);
   }
+
+  componentDidMount(){
+    
+  }
   render(){
     return (
       <View style={header.header}>
