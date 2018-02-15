@@ -132,7 +132,21 @@ export function kuliahList(token,callback){
         method : 'GET',
         headers : {
             'Authorization' : 'Bearer '+token
-        }
+        },
+    }).then((res) => {
+        return res.json();
+    }).then((json) => {
+        callback(json)
+    })
+}
+
+export function update(token,data,callback){
+    fetch(host+'/jadwal',{
+        method : 'PUT',
+        headers : {
+            'Authorization' : 'Bearer '+token
+        },
+        body : JSON.stringify(data),
     }).then((res) => {
         return res.json();
     }).then((json) => {

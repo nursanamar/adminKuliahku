@@ -8,8 +8,8 @@
   },
   "dependencies": {
     "native-base": "^2.3.6",
-    "react": "16.0.0",
-    "react-native": "0.51.0",
+    "react": "^16.2.0",
+    "react-native": "^0.53.0",
     "react-native-elements": "^0.17.0",
     "react-native-push-notification": "^3.0.2",
     "react-native-wheel-picker-android": "^1.0.3",

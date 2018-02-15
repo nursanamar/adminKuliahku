@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View,Button,ToolbarAndroid } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+// import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class Header extends React.Component  {
   constructor(props) {
@@ -24,7 +24,7 @@ export default class Header extends React.Component  {
             ]}
             overflowIconName="md-more"
           /> */}
-          <Button title="logout" onPress={() => { this.props.logout() }} />
+          <Button title="logout" onPress={() => { this.props.collection.logout() }} />
           {/* <Icon
             name='log-out' type="entypo" color='#fff' /> */}
         </View>

@@ -23,6 +23,7 @@ export default class Tbody extends Component {
 
         AsyncStorage.getItem('token').done((token) => {
             getData(token,function(res) {
+                console.log(res);
                 var data = res;
                 var lists = [];
                 data.forEach((data,key) => {
@@ -36,6 +37,7 @@ export default class Tbody extends Component {
                                 time={data.time}
                                 room={data.room}
                                 status={data.status}
+                                id={data.idKuliah}
                             />
                         </TouchableOpacity>)
                 });

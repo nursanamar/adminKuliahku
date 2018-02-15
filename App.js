@@ -15,6 +15,10 @@ export default class App extends React.Component {
       isLogin : null,
       initial : true
     }
+
+    this.collection = {
+      logout : this.logout.bind(this)
+    }
   }
 
   // componentDidMount(){
@@ -32,13 +36,14 @@ export default class App extends React.Component {
     } catch (error) {
       
     }
-  }
-	
 
-  componentWillUnmount(){
-    // AppState.removeEventListener('change',this.handleChange);
-    this.logout();
   }
+
+	
+  // componentWillUnmount(){
+  //   AppState.removeEventListener('change',this.handleChange);
+    
+  // }
 
   handleChange(status){
     if(status === 'background') {
@@ -47,6 +52,12 @@ export default class App extends React.Component {
         date: new Date(Date.now() + (10 * 1000)) // in 60 secs
       });
     }
+  }
+
+  fireNotif(msg){
+    PushNotification.localNotification({
+      message: msg, // (required)
+    });
   }
 
   logout(){
@@ -62,8 +73,37 @@ export default class App extends React.Component {
     AsyncStorage.multiSet([['nim',user.nim],['name',user.nama],['token',token]]).then(() => {
       this.setState({
         isLogin: user.nim
-      })
+      });
+      this.wsInit();
     })
+  }
+
+  wsInit(){
+    var ws = new WebSocket("ws://localhost:4444/jadwal");
+
+    ws.onopen = () => {
+      let data = {
+        action : "auth",
+        data : {
+          id:"nursan"
+        }
+      };
+
+      ws.send(JSON.stringify(data));
+
+    }
+
+    ws.onmessage = (e) => {
+      this.fireNotif(e.data.data);
+    }
+
+    ws.onerror = (e) => {
+      console.log(e);
+    }
+
+    ws.onclose = () => {
+      console.log("closed")
+    }
   }
 
 
@@ -71,7 +111,7 @@ export default class App extends React.Component {
   render() {
     return (this.state.initial) ? <Splash /> : (this.state.isLogin !== null) ? (
       <View style={styles.container} >
-         <Header logout={this.logout.bind(this)} />
+         <Header collection={this.collection} />
          <MainStack />
          <PushNotif />
      </View>

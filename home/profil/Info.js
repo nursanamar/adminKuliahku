@@ -1,19 +1,35 @@
 import React, { Component } from 'react';
 import {Button, ScrollView ,AsyncStorage, KeyboardAvoidingView ,View, Text, StyleSheet,TextInput,Picker,Item,PickerItem } from 'react-native';
-import {kuliahList} from '../../config/Api';
+import {kuliahList,update} from '../../config/Api';
+import { WheelPicker, DatePicker, TimePicker } from 'react-native-wheel-picker-android'
 
 class Info extends Component {
     constructor(props){
         super(props);
         this.state = {
+            token : null,
             list : null,
-            idMatkul : null,
+            idKuliah:(this.props.data === null) ? null : this.props.data.idKuliah,
             room : (this.props.data === null) ? null : this.props.data.room,
         }
     }
 
+    save(){
+        let data = {
+            id : this.state.idKuliah,
+            data : {
+                ruangan : this.state.room
+            }
+        };
+
+        console.log(data);
+    }
+
     componentDidMount(){
         AsyncStorage.getItem('token').done((token) => {
+            this.setState({
+               token : token 
+            })
             kuliahList(token,function(data) {
                 let list = []; 
                 data.forEach((value,key) => {
@@ -28,6 +44,8 @@ class Info extends Component {
     }
 
     render(){
+        let minutesArray = ['00', '15', '30', '45'];
+        let now = new Date();
         let isEdit = (this.props.data === null) ? false : true;
         return (
             <View style={{ flex: 1,padding: 10, backgroundColor:"#fff" }} >
@@ -55,9 +73,11 @@ class Info extends Component {
                         <Text style={{ flex: 1,fontSize:15,fontWeight:'bold' }}>Jam </Text>
                     </View>
                     <View style={{flex:1}}>
-                        <Picker>
-                            <Picker.Item label="d" value="d" />
-                        </Picker>
+                        
+                        <TimePicker
+	       minutes={minutesArray}
+	       initDate={now.toISOString()}/>
+                        
                     </View>
                 </View>
                 <View style={{ flex: 1, flexDirection: 'column', }}>
@@ -66,10 +86,34 @@ class Info extends Component {
                     </View>
                     <View style={{flex:1,height:40,}}>
                                                                                                     
-                        {(isEdit) ? <TextInput onChange={(text) => {console.log(text);this.setState({room : text})}} value={this.state.room} style={{height:30,padding:5}}  /> : <TextInput onChange={(text) => {console.log(text);this.setState({room : text})}} value={this.state.room} style={{height:30,padding:5}} />}
+                        {(isEdit) ? 
+                        <TextInput 
+                            
+                            value={this.state.room} 
+                            style={{height:30,padding:5}}  
+                        /> 
+                        : 
+                        <TextInput 
+                           
+                            value={this.state.room} 
+                            style={{height:30,padding:5}} 
+                        />
+                        }
                     </View>
                 </View>
-                <Button onPress={() => {return null} } title="Simpan" />
+                <Button 
+                    onPress={() => {
+                        let data = {
+                            id : this.state.idKuliah,
+                            data : {
+                                ruangan : this.state.room
+                            }
+                        }
+                        console.log(data);
+                        update(this.state.token,data,() => {})
+                    } } 
+                    title="Simpan" 
+                />
                 </ScrollView>
             </View>
         )
