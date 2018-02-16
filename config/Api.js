@@ -158,31 +158,33 @@ export function update(token,data,callback){
 export function fireNotif(msg){
     PushNotification.localNotification({
       message: msg, // (required)
+      
     });
   }
 
-export var ws = new WebSocket("ws://localhost:4444/jadwal");
+// export var ws = new WebSocket("ws://localhost:4444/jadwal");
 
-    ws.onopen = () => {
-      let data = {
-        action : 'auth',
-        data : {
-          id : 'nursan'
-        }
-      }
+//     ws.onopen = () => {
+//       let data = {
+//         action : 'auth',
+//         data : {
+//           id : 'nursan'
+//         }
+//       }
 
-      ws.send(JSON.stringify(data))
-    }
+//       ws.send(JSON.stringify(data))
+//     }
 
 
     
-    // ws.onmessage = function(e) {
-    //   console.log(e.data);
-    //   let res =  JSON.parse(e.data);
+//     // ws.onmessage = function(e) {
+//     //   console.log(e.data);
+//     //   let res =  JSON.parse(e.data);
 
-    //   if(res.action === 'log'){
-    //     fireNotif(res.data);
-    //   }else{
-    //     fireNotif(res.msg);
-    //   }
-    // };
+//     //   if(res.action === 'log'){
+//     //     fireNotif(res.data);
+//     //   }else{
+//     //     fireNotif(res.msg);
+//     //   }
+//     // };
+// export var gmsg = {fsf:"hai"};

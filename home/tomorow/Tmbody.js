@@ -1,16 +1,17 @@
 //import liraries
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import { View, Text, StyleSheet, ScrollView, Button,TouchableOpacity } from 'react-native';
 import List from "../today/List";
 import Profil from '../profil/Body';
-import {getData} from '../../config/Api';
+
 // create a component
-export default class Tmbody extends Component {
+class Tmbody extends Component {
     constructor(props){
         super(props)
     }
     render() {
-        var data = [];
+        var data = this.props.data;
         var lists = [];
         data.forEach((data,key) => {
             lists.push(
@@ -47,3 +48,10 @@ const styles = StyleSheet.create({
     
 });
 
+function mapStateToProps(state){
+    return {
+        data : state.data
+    }
+}
+
+export default connect(mapStateToProps)(Tmbody);

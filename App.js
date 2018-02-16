@@ -2,12 +2,16 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, StatusBar, AsyncStorage,AppState } from 'react-native';
 import { MainStack, isLogin } from './config/Route';
 import Header from './home/Header';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
+import {reducer} from './config/reducers/Main';
 import Splash from './Splash'
 import Login from './login/Login';
-import {getData} from './config/Api';
+import {getData,fireNotif} from './config/Api';
 import PushNotif from './config/PushNotif';
 import PushNotification from 'react-native-push-notification';
 
+const store = createStore(reducer);
 
 export default class App extends React.Component {
   constructor(props){
@@ -20,21 +24,54 @@ export default class App extends React.Component {
 
     this.collection = {
       logout : this.logout.bind(this),
-      fireMsg : this.fireNotif.bind(this),
     }
   }
 
-  // componentDidMount(){
-  //   AppState.addEventListener('change',this.handleChange);
-  // }
+
+  wsInit(token){
+
+    var ws = new WebSocket('ws://localhost:4444/jadwal');
+
+    ws.onopen = () => {
+      let data = {
+        action : 'auth',
+        data : {
+          id : 'nursan'
+        }
+      };
+      ws.send(JSON.stringify(data));
+    }
+
+    ws.onmessage = (e) => {
+      let data = JSON.parse(e.data);
+      switch(data.action){
+        case 'log':
+          console.log(data);
+        break;
+        case 'update':
+          fireNotif(data.msg);
+          getData(token,(res) => {
+            store.dispatch({type : "FETCH",data : res})
+          })
+        break;
+        default:
+          console.log(data);
+      }
+    }
+  }
+
   
   componentWillMount(){
     try {
-      AsyncStorage.getItem('nim').done((nim) => {
+      AsyncStorage.getItem('token').done((nim) => {
         this.setState({
           isLogin: nim,
           initial: false
         });
+        this.wsInit(nim);
+        getData(nim,(res) => {
+          store.dispatch({type : "FETCH",data : res})
+        })
       });
     } catch (error) {
       
@@ -44,7 +81,8 @@ export default class App extends React.Component {
 
 	
   // componentWillUnmount(){
-  //   AppState.removeEventListener('change',this.handleChange);
+  //   ws.close();
+  //   // AppState.removeEventListener('change',this.handleChange);
     
   // }
 
@@ -78,6 +116,10 @@ export default class App extends React.Component {
       this.setState({
         isLogin: user.nim
       });
+    });
+    this.wsInit(token);    
+    getData(token,(res) => {
+      store.dispatch({type : 'FETCH',data : res})
     })
   }
 
@@ -87,11 +129,13 @@ export default class App extends React.Component {
 
   render() {
     return (this.state.initial) ? <Splash /> : (this.state.isLogin !== null) ? (
-      <View style={styles.container} >
-         <Header collection={this.collection} />
-         <MainStack />
-         <PushNotif />
-     </View>
+      <Provider store={store}>
+        <View style={styles.container} >
+          <Header collection={this.collection} />
+          <MainStack />
+          <PushNotif />
+        </View>
+      </Provider>
      ): (
          <View style={styles.container} >
            <Login login={this.login.bind(this)} />
