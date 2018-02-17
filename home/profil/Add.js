@@ -8,6 +8,26 @@ import Tugas from './Tugas';
 class Add extends Component {
     constructor(props){
         super(props);
+        this.state = {
+            list : []
+        }
+    }
+    componentDidMount(){
+        AsyncStorage.getItem('token').done((token) => {
+            this.setState({
+               token : token 
+            })
+            kuliahList(token,function(data) {
+                let list = []; 
+                data.forEach((value,key) => {
+                    list.push(<Picker.Item key={key} label={value.nama} value={value.idMatkul} />)
+                });
+                this.setState({
+                    list : list
+                });
+                console.log(list);
+            }.bind(this));
+        })
     }
     render() {
         return (

@@ -1,24 +1,53 @@
 //import liraries
 import React, { Component } from 'react';
-import { ScrollView,View, Text, StyleSheet, KeyboardAvoidingView} from 'react-native';
+import { AsyncStorage,ScrollView,View, Text, StyleSheet, KeyboardAvoidingView} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import Info from './Info';
 import Tugas from './Tugas';
+import {update} from '../../config/Api';
+
 // create a component
 class Profil extends Component {
     constructor(props){
         super(props);
+        this.state = {
+            ...this.props.navigation.state.params.data,
+        }
+
+        this.collection = {
+            onChangeText : this.changeRuangan.bind(this),
+            save : this.save.bind(this),
+        }
     }
+
+    save(){
+        let data = {
+            id : this.state.idKuliah,
+            data : {
+                ruangan : this.state.room
+            }
+        }
+        AsyncStorage.getItem('token').done((token) => {
+            update(token,data,function(){
+                this.props.navigation.goBack();
+            }.bind(this));
+        });
+    }
+
+    changeRuangan(e){
+        this.setState({
+            room : e
+        });
+    }
+
     render() {
         return (
-            
             <View style={{ flex: 1, marginTop: 20 }}>
                 <ScrollView>
-                    <Info data={this.props.navigation.state.params.data} />
+                    <Info {...this.state} collection={this.collection} navigation={this.props.navigation} />
                     <Tugas data={this.props.navigation.state.params.data.tugas} />
                 </ScrollView>
             </View>
-            
         );
     }
 }
