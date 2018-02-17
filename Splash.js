@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput, Button, TouchableOpacity, AsyncStorage } from 'react-native';
+import { View, Text,ActivityIndicator,StyleSheet} from 'react-native';
 // create a component
 class Splash extends Component {
     constructor(props){
@@ -12,6 +12,7 @@ class Splash extends Component {
                 <View style={styles.login}>
                     <Text style={{color: '#fff',fontSize: 40}}>kuliah<Text style={{color: '#fff',fontSize: 40,fontWeight: 'bold'}}>K</Text>u</Text>
                 </View>
+                <ActivityIndicator />
             </View>
         );
     }
