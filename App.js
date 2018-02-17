@@ -13,13 +13,14 @@ import PushNotification from 'react-native-push-notification';
 
 const store = createStore(reducer);
 
+var ws;
+
 export default class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       isLogin : null,
       initial : true,
-      jadwal : []
     }
 
     this.collection = {
@@ -28,15 +29,13 @@ export default class App extends React.Component {
   }
 
 
-  wsInit(token){
-
-    var ws = new WebSocket('ws://localhost:4444/jadwal');
-
+  wsInit(nim,token){
+   ws = new WebSocket('ws://localhost:4444/jadwal');
     ws.onopen = () => {
       let data = {
         action : 'auth',
         data : {
-          id : 'nursan'
+          id : nim
         }
       };
       ws.send(JSON.stringify(data));
@@ -63,15 +62,17 @@ export default class App extends React.Component {
   
   componentWillMount(){
     try {
-      AsyncStorage.getItem('token').done((nim) => {
+      AsyncStorage.multiGet(['token','nim']).done((nim) => {
         this.setState({
-          isLogin: nim,
+          isLogin: nim[1][1],
           initial: false
         });
-        this.wsInit(nim);
-        getData(nim,(res) => {
-          store.dispatch({type : "FETCH",data : res})
-        })
+        if(nim[1][1] != null){
+          this.wsInit(nim[1][1],nim[0][1]);
+          getData(nim[0][1],(res) => {
+            store.dispatch({type : "FETCH",data : res})
+          })
+        }
       });
     } catch (error) {
       
@@ -106,6 +107,7 @@ export default class App extends React.Component {
       this.setState({
         isLogin: null
       });
+      ws.close();
     })
   }
 
@@ -117,7 +119,7 @@ export default class App extends React.Component {
         isLogin: user.nim
       });
     });
-    this.wsInit(token);    
+    this.wsInit(user.nim,user.token);    
     getData(token,(res) => {
       store.dispatch({type : 'FETCH',data : res})
     })
