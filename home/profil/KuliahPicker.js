@@ -14,7 +14,7 @@ export default class KuliahPicker extends Component {
             </View>
         ) : (
             <View style={{ flex: 1 }}>
-                <Picker onValueChange={(label, value) => { console.log(label, value); this.setState({ idMatkul: label }) }} selectedValue={this.state.idMatkul} >
+                <Picker {...this.props.picker}>
                     {list}
                 </Picker>
             </View>

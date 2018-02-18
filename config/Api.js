@@ -155,6 +155,20 @@ export function update(token,data,callback){
     })
 }
 
+export function kuliahById(token,id,callback){
+    fetch(host+'/kuliah/'+id,{
+        method : 'GET',
+        headers : {
+            'Authorization' : 'Bearer '+token
+        }
+    }).then((res) => {
+        // console.log(res);
+        return res.json();
+    }).then((json) => {
+        callback(json);
+    });
+}
+
 export function fireNotif(msg){
     PushNotification.localNotification({
       message: msg, // (required)

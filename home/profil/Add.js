@@ -1,17 +1,85 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, KeyboardAvoidingView} from 'react-native';
+import { ScrollView ,Picker, AsyncStorage ,View, Text, StyleSheet, KeyboardAvoidingView} from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import Info from './Info';
+import AddInfo from './AddInfo';
 import Tugas from './Tugas';
+import {kuliahList,kuliahById,update} from '../../config/Api';
 // create a component
 class Add extends Component {
     constructor(props){
         super(props);
         this.state = {
-            list : []
+            list : [],
+            data : {
+                idKuliah : '',
+                time : '',
+                room : '',
+                dosen : ''
+            },
+            button : true,
+        }
+        this.collection = {
+            onChangeText : this.ruanganChange.bind(this),
+            pickerChange : this.kuliahSelected.bind(this),
+            save : this.save.bind(this),
+            changeTime : this.timeSelected.bind(this)
         }
     }
+
+    ruanganChange(e){
+        let prev = this.state.data;
+        this.setState({
+            data : {
+                ...prev,
+                room : e
+            }
+        })
+    }
+
+    kuliahSelected(value,index){
+        let data = this.state.data
+        this.setState({
+            data : {
+                ...data,
+                idKuliah: value
+            }
+        });
+        kuliahById(this.state.token,value,function(res){
+            this.setState({
+                data : {
+                    ...res,
+                    idKuliah : value
+                },
+                button : false
+            })
+        }.bind(this))
+    }
+
+    timeSelected(time){
+        this.setState({
+            data : {
+                time : time
+            }
+        })
+    }
+
+    save(){
+        let data = {
+            id : this.state.data.idKuliah,
+            data : {
+                ruangan : this.state.data.room,
+                jam : this.state.data.time,
+                status : this.state.data.status
+            }
+        }
+
+        update(this.state.token,data,function(){
+            this.props.navigation.goBack();
+        }.bind(this))
+
+    }
+
     componentDidMount(){
         AsyncStorage.getItem('token').done((token) => {
             this.setState({
@@ -20,7 +88,7 @@ class Add extends Component {
             kuliahList(token,function(data) {
                 let list = []; 
                 data.forEach((value,key) => {
-                    list.push(<Picker.Item key={key} label={value.nama} value={value.idMatkul} />)
+                    list.push(<Picker.Item key={key} label={value.nama} value={value.idKuliah} />)
                 });
                 this.setState({
                     list : list
@@ -32,9 +100,10 @@ class Add extends Component {
     render() {
         return (
             <View style={{ flex: 1, marginTop: 20 }}>
-                {/* <Text>HEllo</Text> */}
-                <Info data={null}/>
-                <Tugas data={null} />
+                <ScrollView>
+                    <AddInfo button={this.state.button} {...this.state.data} list={this.state.list} collection={this.collection} />
+                    <Tugas data={null} />
+                </ScrollView>
             </View>
         );
     }
