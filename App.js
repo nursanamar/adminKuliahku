@@ -119,7 +119,7 @@ export default class App extends React.Component {
         isLogin: user.nim
       });
     });
-    this.wsInit(user.nim,user.token);    
+    this.wsInit(user.nim,token);    
     getData(token,(res) => {
       store.dispatch({type : 'FETCH',data : res})
     })

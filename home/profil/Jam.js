@@ -8,8 +8,14 @@ export default class Timepicker extends Component {
 
     render(){
         var jam = [];
+        var menit = [];
         for (var index = 1; index <= 24; index++) {
-            jam.push(<Picker.Item key={index} label={index.toString()} value={index} />)
+            let h = (index.toString().length < 2) ? "0"+index.toString() : index.toString();
+            jam.push(<Picker.Item key={index} label={h} value={h} />)
+        }
+        for (var index = 0; index <= 60 ; index++){
+            let h = (index.toString().length < 2) ? "0"+index.toString() : index.toString();
+            menit.push(<Picker.Item key={index} label={h} value={h} />)
         }
         return (
             <View style={{ flex: 1, flexDirection: 'column' }}>
@@ -23,13 +29,13 @@ export default class Timepicker extends Component {
                         </Picker>
                     </View>
                     <View style={{ flex: 1 }}>
-                        <Picker selectedValue={8} >
+                        <Picker {...this.props.jam} >
                             {jam}
                         </Picker>
                     </View>
                     <View style={{ flex: 1 }}>
-                        <Picker>
-                            <Picker.Item label="1" value="1" />
+                        <Picker {...this.props.menit}>
+                            {menit}
                         </Picker>
                     </View>
                 </View>

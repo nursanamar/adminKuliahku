@@ -9,8 +9,26 @@ class Info extends Component {
         super(props);
         console.log(props,"Info");
     }
+
+    hourSelected(value,index){
+        let time = this.props.time.split(":");
+        time[0] = value.toString();
+        time = time.join(":");
+        console.log(time);
+        this.props.collection.changeTime(time);
+    }
+
+    minuteSelected(value,index){
+        let time = this.props.time.split(":");
+        time[1] = value.toString();
+        time = time.join(":");
+        console.log(time);
+        this.props.collection.changeTime(time);
+    }
+
     render(){
         let isEdit = true;
+        let hour = this.props.time.split(":");
         return (
             <View style={{ flex: 1,padding: 10, backgroundColor:"#fff" }} >
                 <ScrollView>
@@ -21,7 +39,7 @@ class Info extends Component {
                         <Text style={{ flex: 1,}} >{this.props.dosen}</Text>
                     </View>
                 </View>
-                <Jam />
+                <Jam menit={{selectedValue : hour[1],onValueChange : this.minuteSelected.bind(this)}} jam={{selectedValue : hour[0],onValueChange : this.hourSelected.bind(this)}} />
                 <Ruangan onChangeText={this.props.collection.onChangeText} value={this.props.room} />
                 <Button 
                     onPress={() => {
