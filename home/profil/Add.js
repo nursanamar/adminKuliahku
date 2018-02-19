@@ -17,6 +17,7 @@ class Add extends Component {
                 room : '',
                 dosen : '',
                 hari : '',
+                status : ''
             },
             button : true,
         }
@@ -25,8 +26,19 @@ class Add extends Component {
             hariChange : this.hariChange.bind(this),
             pickerChange : this.kuliahSelected.bind(this),
             save : this.save.bind(this),
-            changeTime : this.timeSelected.bind(this)
+            changeTime : this.timeSelected.bind(this),
+            changeStatus : this.statusChange.bind(this)
         }
+    }
+
+    statusChange(status){
+        let prev = this.state.data;
+        this.setState({
+            data : {
+                ...prev,
+                status : status
+            }
+        })
     }
 
     ruanganChange(e){

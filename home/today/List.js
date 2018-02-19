@@ -16,7 +16,7 @@ class List extends Component {
                     <Text style={styles.tw}>{this.props.time+" "+this.props.room}</Text>
                 </View>
                 <View style={styles.status}>
-                    <Text style={styles.statusText}>{this.props.status}</Text>
+                    <Text style={ (this.props.status !== 'Masuk') ? styles.statusTextRed :styles.statusText}>{this.props.status}</Text>
                 </View>   
             </View>
         );
@@ -61,7 +61,17 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         paddingTop: 5,
         paddingBottom: 5
+    },
+    statusTextRed: {
+        color: '#fff',
+        backgroundColor: 'red',
+        marginRight: 15,
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 5,
+        paddingBottom: 5
     }
+
 });    
 
 //make this component available to the app

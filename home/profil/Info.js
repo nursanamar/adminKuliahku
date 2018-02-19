@@ -3,6 +3,7 @@ import {Button, ScrollView ,View, Text, StyleSheet } from 'react-native';
 import Jam from './Jam';
 import KuliahPicker from './KuliahPicker';
 import Ruangan from './Ruangan';
+import StatusPicker from './StatusPicker';
 
 class Info extends Component {
     constructor(props){
@@ -13,6 +14,10 @@ class Info extends Component {
 
     hariSelected(value,index){
         this.props.collection.changeHari(value);
+    }
+
+    statusSelected(value,index){
+        this.props.collection.changeStatus(value);
     }
 
     hourSelected(value,index){
@@ -46,6 +51,7 @@ class Info extends Component {
                 </View>
                 <Jam hari={{selectedValue : this.props.hari,onValueChange : this.hariSelected.bind(this)}} menit={{selectedValue : hour[1],onValueChange : this.minuteSelected.bind(this)}} jam={{selectedValue : hour[0],onValueChange : this.hourSelected.bind(this)}} />
                 <Ruangan onChangeText={this.props.collection.onChangeText} value={this.props.room} />
+                <StatusPicker onValueChange={this.statusSelected.bind(this)} selectedValue={this.props.status} />
                 <Button 
                     onPress={() => {
                             this.props.collection.save();        

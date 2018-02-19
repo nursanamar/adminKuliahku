@@ -19,6 +19,7 @@ class Profil extends Component {
             save : this.save.bind(this),
             changeTime : this.changeTime.bind(this),
             changeHari : this.changeHari.bind(this),
+            changeStatus : this.changeStatus.bind(this)
         }
     }
 
@@ -28,7 +29,8 @@ class Profil extends Component {
             data : {
                 ruangan : this.state.room,
                 jam : this.state.time,
-                hari : this.state.hari
+                hari : this.state.hari,
+                status : this.state.status
             }
         }
         AsyncStorage.getItem('token').done((token) => {
@@ -36,6 +38,12 @@ class Profil extends Component {
                 this.props.navigation.goBack();
             }.bind(this));
         });
+    }
+
+    changeStatus(status){
+        this.setState({
+            status : status
+        })
     }
 
     changeHari(hari){
