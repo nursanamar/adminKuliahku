@@ -9,6 +9,8 @@ export default class Timepicker extends Component {
     render(){
         var jam = [];
         var menit = [];
+        var hari = [];
+        var namaHari=['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu'];
         for (var index = 1; index <= 24; index++) {
             let h = (index.toString().length < 2) ? "0"+index.toString() : index.toString();
             jam.push(<Picker.Item key={index} label={h} value={h} />)
@@ -17,6 +19,9 @@ export default class Timepicker extends Component {
             let h = (index.toString().length < 2) ? "0"+index.toString() : index.toString();
             menit.push(<Picker.Item key={index} label={h} value={h} />)
         }
+        for (var index = 1; index <= 7 ; index++){
+            hari.push(<Picker.Item key={index} label={namaHari[index - 1]} value={index.toString()} />)
+        }
         return (
             <View style={{ flex: 1, flexDirection: 'column' }}>
                 <View style={{ flex: 1 }}>
@@ -24,8 +29,8 @@ export default class Timepicker extends Component {
                 </View>
                 <View style={{ flex: 1, flexDirection: 'row' }}>
                     <View style={{ flex: 1 }}>
-                        <Picker>
-                            <Picker.Item label="senin" value="senin" />
+                        <Picker {...this.props.hari} >
+                            {hari}
                         </Picker>
                     </View>
                     <View style={{ flex: 1 }}>

@@ -10,6 +10,11 @@ class Info extends Component {
         console.log(props,"Info");
     }
 
+
+    hariSelected(value,index){
+        this.props.collection.changeHari(value);
+    }
+
     hourSelected(value,index){
         let time = this.props.time.split(":");
         time[0] = value.toString();
@@ -39,7 +44,7 @@ class Info extends Component {
                         <Text style={{ flex: 1,}} >{this.props.dosen}</Text>
                     </View>
                 </View>
-                <Jam menit={{selectedValue : hour[1],onValueChange : this.minuteSelected.bind(this)}} jam={{selectedValue : hour[0],onValueChange : this.hourSelected.bind(this)}} />
+                <Jam hari={{selectedValue : this.props.hari,onValueChange : this.hariSelected.bind(this)}} menit={{selectedValue : hour[1],onValueChange : this.minuteSelected.bind(this)}} jam={{selectedValue : hour[0],onValueChange : this.hourSelected.bind(this)}} />
                 <Ruangan onChangeText={this.props.collection.onChangeText} value={this.props.room} />
                 <Button 
                     onPress={() => {

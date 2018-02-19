@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        data : state.data,
+        data : state.data.today,
     }
 }
 

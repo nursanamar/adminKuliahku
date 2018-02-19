@@ -15,12 +15,14 @@ class Add extends Component {
                 idKuliah : '',
                 time : '',
                 room : '',
-                dosen : ''
+                dosen : '',
+                hari : '',
             },
             button : true,
         }
         this.collection = {
             onChangeText : this.ruanganChange.bind(this),
+            hariChange : this.hariChange.bind(this),
             pickerChange : this.kuliahSelected.bind(this),
             save : this.save.bind(this),
             changeTime : this.timeSelected.bind(this)
@@ -33,6 +35,16 @@ class Add extends Component {
             data : {
                 ...prev,
                 room : e
+            }
+        })
+    }
+
+    hariChange(e){
+        let prev = this.state.data;
+        this.setState({
+            data : {
+                ...prev,
+                hari : e
             }
         })
     }
@@ -52,8 +64,9 @@ class Add extends Component {
                     idKuliah : value
                 },
                 button : false
-            })
+            });
         }.bind(this))
+        
     }
 
     timeSelected(time){
@@ -70,7 +83,8 @@ class Add extends Component {
             data : {
                 ruangan : this.state.data.room,
                 jam : this.state.data.time,
-                status : this.state.data.status
+                status : this.state.data.status,
+                hari : this.state.data.hari
             }
         }
 

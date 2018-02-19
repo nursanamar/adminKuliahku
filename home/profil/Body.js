@@ -17,7 +17,8 @@ class Profil extends Component {
         this.collection = {
             onChangeText : this.changeRuangan.bind(this),
             save : this.save.bind(this),
-            changeTime : this.changeTime.bind(this)
+            changeTime : this.changeTime.bind(this),
+            changeHari : this.changeHari.bind(this),
         }
     }
 
@@ -26,7 +27,8 @@ class Profil extends Component {
             id : this.state.idKuliah,
             data : {
                 ruangan : this.state.room,
-                jam : this.state.time
+                jam : this.state.time,
+                hari : this.state.hari
             }
         }
         AsyncStorage.getItem('token').done((token) => {
@@ -34,6 +36,12 @@ class Profil extends Component {
                 this.props.navigation.goBack();
             }.bind(this));
         });
+    }
+
+    changeHari(hari){
+        this.setState({
+            hari : hari
+        })
     }
 
     changeRuangan(e){

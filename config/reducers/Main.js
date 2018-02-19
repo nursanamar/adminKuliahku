@@ -2,15 +2,16 @@ import {getData} from '../Api';
 import {AsyncStorage} from 'react-native';
 
 const initialState = {
-    data : [],
+    data : {
+        today : [],
+        tomorrow : []
+    },
     msg : "helllo"
 }
 
 export function reducer(state = initialState,action){
-    console.log(action);
     switch(action.type){
         case "FETCH":
-            console.log(action);
             return {
                 ...state,
                 data : action.data
