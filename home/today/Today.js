@@ -27,7 +27,7 @@ class Tbody extends Component {
         data.forEach((data,key) => {
             key++;
             lists.push(<TouchableOpacity key={key} onPress={() => {
-                        this.props.navigation.navigate('profil',{data:data})
+                        this.props.navigation.navigate('profil',{data:data,doUpdate:this.doUpdate.bind(this)})
                     }} >
                     <List
                         matkul={data.matkul}

@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { AsyncStorage,ScrollView,View, Text, StyleSheet, KeyboardAvoidingView} from 'react-native';
+import { ActivityIndicator ,AsyncStorage,ScrollView,View, Text, StyleSheet, KeyboardAvoidingView} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import Info from './Info';
 import Tugas from './Tugas';
@@ -12,6 +12,7 @@ class Profil extends Component {
         super(props);
         this.state = {
             ...this.props.navigation.state.params.data,
+            loading : false,
         }
 
         this.collection = {
@@ -24,6 +25,9 @@ class Profil extends Component {
     }
 
     save(){
+        this.setState({
+            loading : true
+        })
         let data = {
             id : this.state.idKuliah,
             data : {
@@ -35,6 +39,7 @@ class Profil extends Component {
         }
         AsyncStorage.getItem('token').done((token) => {
             update(token,data,function(){
+                this.props.navigation.state.params.doUpdate();
                 this.props.navigation.goBack();
             }.bind(this));
         });
@@ -67,6 +72,7 @@ class Profil extends Component {
     render() {
         return (
             <View style={{ flex: 1, marginTop: 20 }}>
+                {this.state.loading ? <ActivityIndicator animating={true} /> : null}
                 <ScrollView>
                     <Info {...this.state} collection={this.collection} navigation={this.props.navigation} />
                     <Tugas data={this.props.navigation.state.params.data.tugas} />
