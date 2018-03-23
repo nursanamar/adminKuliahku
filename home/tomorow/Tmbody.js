@@ -1,7 +1,7 @@
 //import liraries
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import { View, Text, StyleSheet, ScrollView, Button,TouchableOpacity } from 'react-native';
+import { ActivityIndicator ,View, Text, StyleSheet, ScrollView, Button,TouchableOpacity } from 'react-native';
 import List from "../today/List";
 import Profil from '../profil/Body';
 
@@ -30,9 +30,14 @@ class Tmbody extends Component {
         })
         return (
             <View style={styles.container}>
-                <ScrollView>
-                   {lists}
-                </ScrollView>
+                {
+                    this.props.status ?
+                        <ActivityIndicator animating={true} />
+                    :
+                    <ScrollView>
+                        {lists}
+                    </ScrollView>
+                }
             </View>
         );
     }
@@ -50,7 +55,8 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state){
     return {
-        data : state.data.tomorrow
+        data : state.data.tomorrow,
+        status : state.isLoading,
     }
 }
 

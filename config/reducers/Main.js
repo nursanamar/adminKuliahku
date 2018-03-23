@@ -6,26 +6,22 @@ const initialState = {
         today : [],
         tomorrow : []
     },
-    msg : "helllo"
+    isLoading : true
 }
 
 export function reducer(state = initialState,action){
     switch(action.type){
         case "FETCH":
             return {
-                ...state,
-                data : action.data
+                data : action.data,
+                isLoading : false
             }
         break;
-        case 'msg':
-            AsyncStorage.getItem('token',(token) => {
-                getData(token,(res) => {
-                    return {
-                        ...state,
-                        data : res
-                    }
-                })
-            })
+        case 'LOADING':
+            return {
+                ...state,
+                isLoading : true
+            }
         default:
             return state;
         break

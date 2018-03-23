@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { ScrollView ,Picker, AsyncStorage ,View, Text, StyleSheet, KeyboardAvoidingView} from 'react-native';
+import { ActivityIndicator ,ScrollView ,Picker, AsyncStorage ,View, Text, StyleSheet, KeyboardAvoidingView} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import AddInfo from './AddInfo';
 import Tugas from './Tugas';
@@ -20,6 +20,7 @@ class Add extends Component {
                 status : ''
             },
             button : true,
+            loading : true,
         }
         this.collection = {
             onChangeText : this.ruanganChange.bind(this),
@@ -67,7 +68,8 @@ class Add extends Component {
             data : {
                 ...data,
                 idKuliah: value
-            }
+            },
+            loading : true,
         });
         kuliahById(this.state.token,value,function(res){
             this.setState({
@@ -75,7 +77,8 @@ class Add extends Component {
                     ...res,
                     idKuliah : value
                 },
-                button : false
+                button : false,
+                loading : false,
             });
         }.bind(this))
         
@@ -100,7 +103,12 @@ class Add extends Component {
             }
         }
 
+        this.setState({
+            loading :true,
+        });
+
         update(this.state.token,data,function(){
+            this.props.navigation.state.params.doUpdate();
             this.props.navigation.goBack();
         }.bind(this))
 
@@ -117,7 +125,8 @@ class Add extends Component {
                     list.push(<Picker.Item key={key} label={value.nama} value={value.idKuliah} />)
                 });
                 this.setState({
-                    list : list
+                    list : list,
+                    loading : false,
                 });
                 console.log(list);
             }.bind(this));
@@ -126,6 +135,7 @@ class Add extends Component {
     render() {
         return (
             <View style={{ flex: 1, marginTop: 20 }}>
+                {this.state.loading ? <ActivityIndicator animating={true} /> : null }
                 <ScrollView>
                     <AddInfo button={this.state.button} {...this.state.data} list={this.state.list} collection={this.collection} />
                     <Tugas data={null} />

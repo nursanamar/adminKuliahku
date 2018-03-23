@@ -1,15 +1,26 @@
 //import liraries
 import React, { Component } from 'react';
-import {AppState,TouchableOpacity, View, Text, StyleSheet, ScrollView, Button,AsyncStorage } from 'react-native';
+import { ActivityIndicator ,TouchableOpacity, View, Text, StyleSheet, ScrollView, Button,AsyncStorage } from 'react-native';
 import List from './List';
 import Profil from '../profil/Body';
 import {connect} from 'react-redux';
 import CellAdd from '../CellAdd';
+import {getData} from '../../config/Api';
 // create a component
 class Tbody extends Component {
     constructor(props){
         super(props);    
     }
+
+    doUpdate(){
+        this.props.dispatch({type:'LOADING'});
+        AsyncStorage.getItem('token').then(token => {
+            getData(token,function(data){
+                this.props.dispatch({type : "FETCH",data:data});
+            }.bind(this))
+        })
+    }
+
     render() {
         var data = this.props.data;
         var lists = [];
@@ -29,16 +40,21 @@ class Tbody extends Component {
                 </TouchableOpacity>)
         });
         lists.push(<TouchableOpacity key={0} onPress={() => {
-                this.props.navigation.navigate('add',{data:null});
+                this.props.navigation.navigate('add',{data:null,doUpdate:this.doUpdate.bind(this)});
             }}>
                 <CellAdd />
              </TouchableOpacity>);
             
         return (
             <View style={styles.container}>
-                <ScrollView>
-                   {lists}
-                </ScrollView>
+                {
+                    this.props.status ?
+                        <ActivityIndicator animating={true} />
+                    :
+                    <ScrollView>
+                        {lists}
+                    </ScrollView>
+                }
             </View>
         );
     }
@@ -57,6 +73,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
     return {
         data : state.data.today,
+        status : state.isLoading,
     }
 }
 
