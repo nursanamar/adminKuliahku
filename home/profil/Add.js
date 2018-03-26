@@ -85,11 +85,14 @@ class Add extends Component {
     }
 
     timeSelected(time){
+        let prev = this.state.data;
         this.setState({
             data : {
+                ...prev,
                 time : time
             }
         })
+        console.log(this.state.data);
     }
 
     save(){
