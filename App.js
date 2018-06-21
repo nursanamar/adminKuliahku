@@ -7,13 +7,13 @@ import {createStore} from 'redux';
 import {reducer} from './config/reducers/Main';
 import Splash from './Splash'
 import Login from './login/Login';
-import {getData,fireNotif} from './config/Api';
+import {getData,fireNotif,getAll} from './config/Api';
 import PushNotif from './config/PushNotif';
 import PushNotification from 'react-native-push-notification';
 
 const store = createStore(reducer);
 
-var ws;
+
 
 export default class App extends React.Component {
   constructor(props){
@@ -27,38 +27,6 @@ export default class App extends React.Component {
       logout : this.logout.bind(this),
     }
   }
-
-
-  wsInit(nim,token){
-   ws = new WebSocket('ws://localhost:4444/jadwal');
-    ws.onopen = () => {
-      let data = {
-        action : 'auth',
-        data : {
-          id : nim
-        }
-      };
-      ws.send(JSON.stringify(data));
-    }
-
-    ws.onmessage = (e) => {
-      let data = JSON.parse(e.data);
-      switch(data.action){
-        case 'log':
-          console.log(data);
-        break;
-        case 'update':
-          fireNotif(data.msg);
-          getData(token,(res) => {
-            store.dispatch({type : "FETCH",data : res})
-          })
-        break;
-        default:
-          console.log(data);
-      }
-    }
-  }
-
   
   componentWillMount(){
     try {
@@ -68,7 +36,6 @@ export default class App extends React.Component {
           initial: false
         });
         if(nim[1][1] != null){
-          this.wsInit(nim[1][1],nim[0][1]);
           getData(nim[0][1],(res) => {
             store.dispatch({type : "FETCH",data : res})
           })
@@ -107,7 +74,6 @@ export default class App extends React.Component {
       this.setState({
         isLogin: null
       });
-      ws.close();
     })
   }
 
@@ -118,10 +84,9 @@ export default class App extends React.Component {
       this.setState({
         isLogin: user.nim
       });
-    });
-    this.wsInit(user.nim,token);    
+    });    
     getData(token,(res) => {
-      store.dispatch({type : 'FETCH',data : res})
+      store.dispatch({type : 'FETCH',data : res});
     })
   }
 

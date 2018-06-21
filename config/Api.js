@@ -91,7 +91,7 @@ import PushNotification from 'react-native-push-notification';
 //     }
 //     return data;
 // }
-var host = 'https://boiling-island-33613.herokuapp.com/index.php';
+var host = 'https://boiling-island-33613.herokuapp.com';
 
 export function getData(token,onSucces,onError = function(){}){
     fetch(host+'/jadwal',{
@@ -103,7 +103,21 @@ export function getData(token,onSucces,onError = function(){}){
     }).then((respon) => {
         return respon.json();
     }).then((json) => {
-        onSucces(json);
+        fetch(host + '/all', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        }).then((res) => {
+            return res.json();
+        }).then((res) => {
+            let result = {
+                ...json,
+                all : res
+            }
+            onSucces(result);
+        })
+        
     }).catch((err) => {
         onError(err);
     })
@@ -167,6 +181,20 @@ export function kuliahById(token,id,callback){
     }).then((json) => {
         callback(json);
     });
+}
+
+export function getAll(token,callback,err =  () => {}){
+    fetch(host+'/all',{
+        method : 'GET',
+        headers : {
+            'Authorization' : 'Bearer '+token
+        }
+    }).then((res) => {
+        return res.json();
+    }).then((res) => {
+        console.log(res,"api")
+        callback(res);
+    })
 }
 
 export function fireNotif(msg){

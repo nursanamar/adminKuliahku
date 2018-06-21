@@ -8,7 +8,8 @@ import Profil from '../home/profil/Body';
 import Add from '../home/profil/Add';
 import Header from '../home/Header';
 import Main from '../main/Main';
-import Login from '../login/Login'
+import Login from '../login/Login';
+import All from '../home/all/All';
 
 export const TodayStack = StackNavigator({
     list : {
@@ -38,6 +39,20 @@ export const TomorowStack = StackNavigator({
     headerMode: 'null'
 })
 
+export const AllStack = StackNavigator({
+    list : {
+        screen: All
+    },
+    profil : {
+        screen : Profil
+    },
+    add : {
+        screen : Add
+    }
+},{
+    headerMode: 'null'
+})
+
 export const HomeStack = TabNavigator(
     {
         today: {
@@ -45,6 +60,9 @@ export const HomeStack = TabNavigator(
         },
         Tomorrow : {
             screen: TomorowStack
+        },
+        All : {
+            screen : AllStack
         }
     },
     {

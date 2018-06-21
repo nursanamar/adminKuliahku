@@ -4,7 +4,8 @@ import {AsyncStorage} from 'react-native';
 const initialState = {
     data : {
         today : [],
-        tomorrow : []
+        tomorrow : [],
+        all : [],
     },
     isLoading : true
 }
