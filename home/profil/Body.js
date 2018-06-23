@@ -75,7 +75,7 @@ class Profil extends Component {
                 {this.state.loading ? <ActivityIndicator animating={true} /> : null}
                 <ScrollView>
                     <Info {...this.state} collection={this.collection} navigation={this.props.navigation} />
-                    <Tugas data={this.props.navigation.state.params.data.tugas} />
+                    <Tugas data={this.props.navigation.state.params.data} />
                 </ScrollView>
             </View>
         );

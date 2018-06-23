@@ -197,12 +197,26 @@ export function getAll(token,callback,err =  () => {}){
     })
 }
 
+export function getTugas(token,id,callback = () => {}) {
+    fetch(host + '/tugas/'+id, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    }).then((res) => {
+        return res.json();
+    }).then((res) => {
+        callback(res);
+    })
+}
+
 export function fireNotif(msg){
     PushNotification.localNotification({
       message: msg, // (required)
       
     });
   }
+
 
 // export var ws = new WebSocket("ws://localhost:4444/jadwal");
 

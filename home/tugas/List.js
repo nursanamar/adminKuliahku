@@ -8,16 +8,20 @@ class List extends Component {
         super(props);
     }
     render() {
-        let status = 'Lewat';
+        
+        let today = new Date(Date.now());
+        let sampai = new Date(this.props.sampai.toString());
+        let status = (today.getTime() > sampai.getTime()) ? 'Lewat' : null;
+        
         return (
             <View style={styles.list}>
                 <View style={styles.desc}>
-                    <Text style={styles.matkul}>Judul</Text>
-                    <Text style={styles.dosen}>Mulai : 21/1/2019</Text>
-                    <Text style={styles.tw}>Sampai : 221/2/2019</Text>
+                    <Text style={styles.matkul}>{this.props.judul}</Text>
+                    <Text style={styles.dosen}>{"Mulai : "+this.props.mulai}</Text>
+                    <Text style={styles.tw}>{"Sampai : "+this.props.sampai}</Text>
                 </View>
                 <View style={styles.status}>
-                    <Text style={(status !== 'Lewat') ? styles.statusTextRed : styles.statusText}>{status}</Text>
+                    <Text style={(status == 'Lewat') && styles.statusTextRed}>{status}</Text>
                 </View>
             </View>
         );

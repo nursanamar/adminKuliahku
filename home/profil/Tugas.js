@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { AsyncStorage,ActivityIndicator, View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import List from "../tugas/List";
+import { getTugas } from "../../config/Api";
 
 
 class Tugas extends Component {
@@ -11,7 +12,33 @@ class Tugas extends Component {
             data : []
         }
     }
+
+    componentDidMount(){
+        let kuliah = {
+            ...this.props.data
+        }
+        AsyncStorage.getItem('token').done((token) => {
+            getTugas(token, kuliah.idKuliah, (data) => {
+                this.setState({
+                    data: data
+                })
+                console.log(data)
+            })
+        })
+    }
+
     render(){
+
+        let lists = [];
+        let datum = this.state.data;
+        datum.forEach((data,key) => {
+            lists.push(
+                <TouchableOpacity key={key}>
+                    <List {...data} />
+                </TouchableOpacity>
+            )
+        })
+
         return (
             <View style={{ flex: 1,flexDirection:'column', marginTop: 20, padding: 0 }} >
                 <View style={{flex: 1,flexDirection:'row',padding:10}} >
@@ -22,15 +49,7 @@ class Tugas extends Component {
                         <Text style={{ fontSize:15,fontWeight: 'bold', alignSelf: 'flex-end' }} >Tambah Tugas</Text>
                     </View>
                 </View>
-                <TouchableOpacity>
-                    <List />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <List />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <List />
-                </TouchableOpacity>
+                {lists}
             </View>
         );
     }
