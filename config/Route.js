@@ -10,13 +10,21 @@ import Header from '../home/Header';
 import Main from '../main/Main';
 import Login from '../login/Login';
 import All from '../home/all/All';
+import Detail from '../home/tugas/Detail';
+import AddTugas from "../home/tugas/Add";
 
 export const TodayStack = StackNavigator({
     list : {
         screen: Today
     },
-    profil : {
-        screen : Profil
+    profil: {
+        screen: Profil
+    },
+    detail: {
+        screen: Detail
+    },
+    addTugas: {
+        screen: AddTugas
     },
     add : {
         screen : Add
@@ -29,8 +37,14 @@ export const TomorowStack = StackNavigator({
     list : {
         screen: Tomorrow
     },
-    profil : {
-        screen : Profil
+    profil: {
+        screen: Profil
+    },
+    detail: {
+        screen: Detail
+    },
+    addTugas: {
+        screen: AddTugas
     },
     add : {
         screen : Add
@@ -43,8 +57,14 @@ export const AllStack = StackNavigator({
     list : {
         screen: All
     },
-    profil : {
-        screen : Profil
+    profil: {
+        screen: Profil
+    },
+    detail: {
+        screen: Detail
+    },
+    addTugas: {
+        screen: AddTugas
     },
     add : {
         screen : Add
@@ -52,6 +72,8 @@ export const AllStack = StackNavigator({
 },{
     headerMode: 'null'
 })
+
+
 
 export const HomeStack = TabNavigator(
     {

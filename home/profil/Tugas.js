@@ -33,7 +33,12 @@ class Tugas extends Component {
         let datum = this.state.data;
         datum.forEach((data,key) => {
             lists.push(
-                <TouchableOpacity key={key}>
+                <TouchableOpacity 
+                key={key}
+                onPress={() => {
+                    this.props.navigation.navigate('detail')
+                }}
+                >
                     <List {...data} />
                 </TouchableOpacity>
             )
@@ -46,7 +51,13 @@ class Tugas extends Component {
                         <Text style={{ fontSize:15,fontWeight: 'bold' }} >Tugas</Text>
                     </View>
                     <View style={{ flex:1,alignSelf: 'flex-end'}}>
-                        <Text style={{ fontSize:15,fontWeight: 'bold', alignSelf: 'flex-end' }} >Tambah Tugas</Text>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.props.navigation.navigate('addTugas')
+                            }}
+                        >
+                            <Text style={{ fontSize: 15, fontWeight: 'bold', alignSelf: 'flex-end' }} >Tambah Tugas</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 {lists}
