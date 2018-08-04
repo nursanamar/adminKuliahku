@@ -36,7 +36,7 @@ class Tugas extends Component {
                 <TouchableOpacity 
                 key={key}
                 onPress={() => {
-                    this.props.navigation.navigate('detail')
+                    this.props.navigation.navigate('detail',{data : data})
                 }}
                 >
                     <List {...data} />
