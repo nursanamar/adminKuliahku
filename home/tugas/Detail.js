@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import { Text } from 'react-native';
-import { Spinner,Button,Text,Card,Header,Container,Content,Title,Right,Body,Form,Item,Label,Input,Textarea,CardItem,Left,Grid,Row } from "native-base";
+import { Col,Spinner,Button,Text,Card,Header,Container,Content,Title,Right,Body,Form,Item,Label,Input,Textarea,CardItem,Left,Grid,Row } from "native-base";
 import DatePicker from "./DatePicker";
 class Detail extends Component {
     constructor(props){
@@ -32,21 +32,25 @@ class Detail extends Component {
                         </Item>
                     </Form>
                     <CardItem>
-                        <Textarea 
-                            rowSpan={5} 
-                            bordered 
-                            placeholder="Textarea" 
-                            value={this.state.data.desc} 
-                            onChangeText={(text) => {
-                                let data = this.state.data;
-                                this.setState({
-                                    data : {
-                                        ...data,
-                                        desc : text
-                                    }
-                                });
-                            }}
-                        />
+                        <Grid>
+                            <Col>
+                                <Textarea
+                                    rowSpan={5}
+                                    bordered
+                                    placeholder="Deskripsi tugas"
+                                    value={this.state.data.desc}
+                                    onChangeText={(text) => {
+                                        let data = this.state.data;
+                                        this.setState({
+                                            data: {
+                                                ...data,
+                                                desc: text
+                                            }
+                                        });
+                                    }}
+                                />
+                            </Col>
+                        </Grid>
                     </CardItem>
                     <CardItem>
                         <Grid>
