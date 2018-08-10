@@ -13,10 +13,10 @@ class DatePicker extends Component {
     openPicker = () => {
         let date = this.props.date.split("-");                    
             DatePickerAndroid.open({
-                date: new Date(date[0],date[1],date[2]),
+                date: new Date(date[0],(date[1] - 1),date[2]),
             }).then(({action,year,month,day}) => {
                 if (action !== DatePickerAndroid.dismissedAction) {
-                    this.setDate(year, month, day);
+                    this.setDate(year, (month + 1), day);
                 }
             });
             
