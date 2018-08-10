@@ -27,6 +27,10 @@ class Tugas extends Component {
         })
     }
 
+    doUpdate = () => {
+        this.componentDidMount();
+    }
+
     render(){
 
         let lists = [];
@@ -53,7 +57,7 @@ class Tugas extends Component {
                     <View style={{ flex:1,alignSelf: 'flex-end'}}>
                         <TouchableOpacity
                             onPress={() => {
-                                this.props.navigation.navigate('addTugas')
+                                this.props.navigation.navigate('addTugas',{idKuliah : this.props.data.idKuliah,doUpdate: this.doUpdate})
                             }}
                         >
                             <Text style={{ fontSize: 15, fontWeight: 'bold', alignSelf: 'flex-end' }} >Tambah Tugas</Text>

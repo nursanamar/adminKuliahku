@@ -210,6 +210,20 @@ export function getTugas(token,id,callback = () => {}) {
     })
 }
 
+export function addTugas(token,data,callback = () => {}) {
+    fetch(host + '/tugas', {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        body : JSON.stringify(data)
+    }).then((res) => {
+        return res.json();
+    }).then((res) => {
+        callback(res);
+    })
+}
+
 export function fireNotif(msg){
     PushNotification.localNotification({
       message: msg, // (required)
